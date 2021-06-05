@@ -1,5 +1,4 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 class ObjectWrapper {
     /***
      * 引数のオブジェクトのコピーを this._objに設定
@@ -20,12 +19,19 @@ class ObjectWrapper {
      * @param val オブジェクトの値
      */
     set(key, val) {
-        if (this._obj[key]) {
-            this._obj[key] = val;
+        const keys = Object.keys(this._obj);
+        let ans = false;
+        for (let i = 0; i <= keys.length; i++) {
+            if (keys[i] === key) {
+                this._obj[key] = val;
+                ans = true;
+                break;
+            }
+            else {
+                ans = false;
+            }
         }
-        else {
-            return false;
-        }
+        return ans;
     }
     /**
      * 指定したキーの値のコピーを返却
@@ -41,9 +47,7 @@ class ObjectWrapper {
     findKeys(val) {
         const arr = [];
         const keys = Object.keys(this._obj);
-        console.log(keys);
         keys.forEach((key) => {
-            console.log(key);
             if (this._obj[key] === val) {
                 arr.push(key);
             }

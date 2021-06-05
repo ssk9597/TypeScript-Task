@@ -24,12 +24,22 @@ class ObjectWrapper {
    * @param key オブジェクトのキー
    * @param val オブジェクトの値
    */
-  set(key: ObjKeyType, val: string): void | boolean {
-    if (this._obj[key]) {
-      this._obj[key] = val;
-    } else {
-      return false;
+  set(key: ObjKeyType, val: string): boolean {
+    const keys = Object.keys(this._obj);
+
+    let ans: boolean = false;
+
+    for (let i = 0; i <= keys.length; i++) {
+      if (keys[i] === key) {
+        this._obj[key] = val;
+        ans = true;
+        break;
+      } else {
+        ans = false;
+      }
     }
+
+    return ans;
   }
 
   /**
