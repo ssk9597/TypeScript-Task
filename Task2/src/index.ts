@@ -16,7 +16,7 @@ class ObjectWrapper {
    * @return Object
    */
   get obj(): ObjType {
-    return this._obj;
+    return { ...this._obj };
   }
 
   /**
