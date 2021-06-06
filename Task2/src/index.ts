@@ -8,7 +8,7 @@ class ObjectWrapper {
    * 引数のオブジェクトのコピーを this._objに設定
    */
   constructor(_obj: ObjType) {
-    this._obj = _obj;
+    this._obj = { ..._obj };
   }
 
   /**

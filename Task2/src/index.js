@@ -5,6 +5,8 @@ class ObjectWrapper {
      */
     constructor(_obj) {
         this._obj = _obj;
+        // this._obj = { ..._obj };
+        console.log(this._obj);
     }
     /**
      * this._objのコピーを返却
