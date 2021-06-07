@@ -49,7 +49,7 @@ class ObjectWrapper {
    * @param key オブジェクトのキー
    */
   get(key: ObjKeyType) {
-    return this._obj[key];
+    return { ...this._obj[key] };
   }
 
   /**
