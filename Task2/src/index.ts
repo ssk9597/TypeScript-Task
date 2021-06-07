@@ -1,4 +1,4 @@
-type ObjType = { a: String; b: String; bb?: String; bbb?: String } | any;
+type ObjType = { [key: string]: String };
 type ObjKeyType = 'a' | 'b' | 'bb' | 'bbb';
 
 class ObjectWrapper {

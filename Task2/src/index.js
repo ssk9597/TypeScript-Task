@@ -11,7 +11,6 @@ class ObjectWrapper {
      * @return Object
      */
     get obj() {
-        console.log(Object.assign({}, this._obj));
         return Object.assign({}, this._obj);
     }
     /**
