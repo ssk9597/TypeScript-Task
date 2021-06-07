@@ -1,5 +1,5 @@
 type ObjType = { [key: string]: String };
-type ObjKeyType = 'a' | 'b' | 'bb' | 'bbb';
+type ObjKeyType = string;
 
 class ObjectWrapper {
   private _obj: ObjType;
