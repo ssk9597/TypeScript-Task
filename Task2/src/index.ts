@@ -1,5 +1,6 @@
 type ObjType = { [key: string]: String };
 type ObjKeyType = string;
+type ObjValueType = string;
 
 class ObjectWrapper {
   private _obj: ObjType;
@@ -24,7 +25,7 @@ class ObjectWrapper {
    * @param key オブジェクトのキー
    * @param val オブジェクトの値
    */
-  set(key: ObjKeyType, val: string): boolean {
+  set(key: ObjKeyType, val: ObjValueType): boolean {
     const keys = Object.keys(this._obj);
 
     let ans: boolean = false;
