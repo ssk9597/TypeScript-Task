@@ -1,17 +1,20 @@
 // Ramda
 const R = require('ramda');
 
-type ObjType = { [key: string]: String };
-type ObjKeyType = string;
-type ObjValueType = string;
+// type obj1 = { a: string; b: string };
+type obj1 = { a: '01'; b: '02' };
+// type obj2 = { a: string; b: string; bb: string; bbb: string };
+type obj2 = { a: '01'; b: '02'; bb: '02'; bbb: '02' };
+type keyObj1 = keyof obj1;
+type keyObj2 = keyof obj2;
 
-class ObjectWrapper {
-  private _obj: ObjType;
+class ObjectWrapper<T extends obj1 | obj2, K extends keyof T> {
+  private _obj: T;
 
   /***
    * 引数のオブジェクトのコピーを this._objに設定
    */
-  constructor(_obj: ObjType) {
+  constructor(_obj: T) {
     this._obj = R.clone(_obj);
   }
 
@@ -19,7 +22,7 @@ class ObjectWrapper {
    * this._objのコピーを返却
    * @return Object
    */
-  get obj(): ObjType {
+  get obj(): T {
     return R.clone(this._obj);
   }
 
@@ -28,7 +31,7 @@ class ObjectWrapper {
    * @param key オブジェクトのキー
    * @param val オブジェクトの値
    */
-  set(key: ObjKeyType, val: ObjValueType): boolean {
+  set(key: K, val: any): boolean {
     const keys = Object.keys(this._obj);
 
     let ans: boolean = false;
@@ -51,21 +54,23 @@ class ObjectWrapper {
    * 指定のキーが存在しない場合 undefinedを返却
    * @param key オブジェクトのキー
    */
-  get(key: ObjKeyType) {
-    return { ...this._obj[key] };
+  get(key: K) {
+    return R.clone(this._obj[key]);
   }
 
   /**
    * 指定した値を持つkeyの配列を返却。該当のものがなければ空の配列を返却。
    */
-  findKeys(val: unknown): string[] {
+  findKeys(val: any) {
     const arr: string[] = [];
     const keys = Object.keys(this._obj);
+
     keys.forEach((key): void => {
       if (this._obj[key] === val) {
         arr.push(key);
       }
     });
+
     return arr;
   }
 }
@@ -75,7 +80,7 @@ class ObjectWrapper {
  * 完成したら、以下のスクリプトがすべてOKになる。
  */
 const obj1 = { a: '01', b: '02' };
-const wrappedObj1 = new ObjectWrapper(obj1);
+const wrappedObj1 = new ObjectWrapper<obj1, keyObj1>(obj1);
 
 if (wrappedObj1.obj.a === '01') {
   console.log('OK: get obj()');
@@ -103,7 +108,7 @@ if (
 }
 
 const obj2 = { a: '01', b: '02', bb: '02', bbb: '02' };
-const wrappedObj2 = new ObjectWrapper(obj2);
+const wrappedObj2 = new ObjectWrapper<obj2, keyObj2>(obj2);
 const keys = wrappedObj2.findKeys('02');
 if (
   wrappedObj2.findKeys('03').length === 0 &&
