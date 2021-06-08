@@ -13,7 +13,7 @@ class ObjectWrapper {
      * @return Object
      */
     get obj() {
-        return Object.assign({}, this._obj);
+        return R.clone(this._obj);
     }
     /**
      * this._obj[key] に valを設定。keyがthis._objに存在しない場合、falseを返却

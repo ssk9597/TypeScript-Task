@@ -20,7 +20,7 @@ class ObjectWrapper {
    * @return Object
    */
   get obj(): ObjType {
-    return { ...this._obj };
+    return R.clone(this._obj);
   }
 
   /**
