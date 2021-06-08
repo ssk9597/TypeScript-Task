@@ -1,3 +1,6 @@
+// Ramda
+const R = require('ramda');
+
 type ObjType = { [key: string]: String };
 type ObjKeyType = string;
 type ObjValueType = string;
@@ -9,7 +12,7 @@ class ObjectWrapper {
    * 引数のオブジェクトのコピーを this._objに設定
    */
   constructor(_obj: ObjType) {
-    this._obj = { ..._obj };
+    this._obj = R.clone(_obj);
   }
 
   /**

@@ -1,10 +1,12 @@
 "use strict";
+// Ramda
+const R = require('ramda');
 class ObjectWrapper {
     /***
      * 引数のオブジェクトのコピーを this._objに設定
      */
     constructor(_obj) {
-        this._obj = Object.assign({}, _obj);
+        this._obj = R.clone(_obj);
     }
     /**
      * this._objのコピーを返却
@@ -39,7 +41,7 @@ class ObjectWrapper {
      * @param key オブジェクトのキー
      */
     get(key) {
-        return this._obj[key];
+        return Object.assign({}, this._obj[key]);
     }
     /**
      * 指定した値を持つkeyの配列を返却。該当のものがなければ空の配列を返却。
