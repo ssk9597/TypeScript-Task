@@ -1,10 +1,8 @@
 // Ramda
 const R = require('ramda');
 
-// type obj1 = { a: string; b: string };
-type obj1 = { a: '01'; b: '02' };
-// type obj2 = { a: string; b: string; bb: string; bbb: string };
-type obj2 = { a: '01'; b: '02'; bb: '02'; bbb: '02' };
+type obj1 = { a: string; b: string };
+type obj2 = { a: string; b: string; bb: string; bbb: string };
 type keyObj1 = keyof obj1;
 type keyObj2 = keyof obj2;
 
@@ -55,24 +53,28 @@ class ObjectWrapper<T extends obj1 | obj2, K extends keyof T> {
    * @param key オブジェクトのキー
    */
   get(key: K) {
-    return R.clone(this._obj[key]);
+    if (this._obj[key]) {
+      return R.clone(this._obj[key]);
+    } else {
+      return undefined;
+    }
   }
 
   /**
    * 指定した値を持つkeyの配列を返却。該当のものがなければ空の配列を返却。
    */
-  findKeys(val: any) {
-    const arr: string[] = [];
-    const keys = Object.keys(this._obj);
+  // findKeys(val: any) {
+  //   const arr: string[] = [];
+  //   const keys = Object.keys(this._obj);
 
-    keys.forEach((key): void => {
-      if (this._obj[key] === val) {
-        arr.push(key);
-      }
-    });
+  //   keys.forEach((key): void => {
+  //     if (this._obj[key] === val) {
+  //       arr.push(key);
+  //     }
+  //   });
 
-    return arr;
-  }
+  //   return arr;
+  // }
 }
 
 /**
@@ -109,15 +111,15 @@ if (
 
 const obj2 = { a: '01', b: '02', bb: '02', bbb: '02' };
 const wrappedObj2 = new ObjectWrapper<obj2, keyObj2>(obj2);
-const keys = wrappedObj2.findKeys('02');
-if (
-  wrappedObj2.findKeys('03').length === 0 &&
-  keys.includes('b') &&
-  keys.includes('bb') &&
-  keys.includes('bbb') &&
-  keys.length === 3
-) {
-  console.log('OK: findKeys(val)');
-} else {
-  console.error('NG: findKeys(val)');
-}
+// const keys = wrappedObj2.findKeys('02');
+// if (
+//   wrappedObj2.findKeys('03').length === 0 &&
+//   keys.includes('b') &&
+//   keys.includes('bb') &&
+//   keys.includes('bbb') &&
+//   keys.length === 3
+// ) {
+//   console.log('OK: findKeys(val)');
+// } else {
+//   console.error('NG: findKeys(val)');
+// }
