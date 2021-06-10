@@ -1,12 +1,7 @@
 // Ramda
 const R = require('ramda');
 
-type obj1 = { a: string; b: string };
-type obj2 = { a: string; b: string; bb: string; bbb: string };
-type keyObj1 = keyof obj1;
-type keyObj2 = keyof obj2;
-
-class ObjectWrapper<T extends obj1 | obj2, K extends keyof T> {
+class ObjectWrapper<T> {
   private _obj: T;
 
   /***
@@ -29,7 +24,7 @@ class ObjectWrapper<T extends obj1 | obj2, K extends keyof T> {
    * @param key オブジェクトのキー
    * @param val オブジェクトの値
    */
-  set(key: K, val: any): boolean {
+  set<K extends keyof T>(key: K, val: T[K]): boolean {
     const keys = Object.keys(this._obj);
 
     let ans: boolean = false;
@@ -52,7 +47,7 @@ class ObjectWrapper<T extends obj1 | obj2, K extends keyof T> {
    * 指定のキーが存在しない場合 undefinedを返却
    * @param key オブジェクトのキー
    */
-  get(key: K) {
+  get<K extends keyof T>(key: K) {
     if (this._obj[key]) {
       return R.clone(this._obj[key]);
     } else {
@@ -63,18 +58,18 @@ class ObjectWrapper<T extends obj1 | obj2, K extends keyof T> {
   /**
    * 指定した値を持つkeyの配列を返却。該当のものがなければ空の配列を返却。
    */
-  // findKeys(val: any) {
-  //   const arr: string[] = [];
-  //   const keys = Object.keys(this._obj);
+  findKeys<K extends keyof T>(val: T[K]) {
+    const arr: unknown[] = [];
+    const keys: any = Object.keys(this._obj);
 
-  //   keys.forEach((key): void => {
-  //     if (this._obj[key] === val) {
-  //       arr.push(key);
-  //     }
-  //   });
+    keys.forEach((key: K) => {
+      if (this._obj[key] === val) {
+        arr.push(key);
+      }
+    });
 
-  //   return arr;
-  // }
+    return arr;
+  }
 }
 
 /**
@@ -82,7 +77,8 @@ class ObjectWrapper<T extends obj1 | obj2, K extends keyof T> {
  * 完成したら、以下のスクリプトがすべてOKになる。
  */
 const obj1 = { a: '01', b: '02' };
-const wrappedObj1 = new ObjectWrapper<obj1, keyObj1>(obj1);
+const wrappedObj1 = new ObjectWrapper<typeof obj1>(obj1);
+type obj1Key = keyof { a: '01'; b: '02' };
 
 if (wrappedObj1.obj.a === '01') {
   console.log('OK: get obj()');
@@ -92,7 +88,7 @@ if (wrappedObj1.obj.a === '01') {
 
 if (
   // wrappedObj1.set('c', '03') === false &&
-  wrappedObj1.set('b', '04') === true &&
+  wrappedObj1.set<obj1Key>('b', '04') === true &&
   wrappedObj1.obj.b === '04'
 ) {
   console.log('OK: set(key, val)');
@@ -101,7 +97,7 @@ if (
 }
 
 if (
-  wrappedObj1.get('b') === '04'
+  wrappedObj1.get<obj1Key>('b') === '04'
   // && wrappedObj1.get('c') === undefined
 ) {
   console.log('OK: get(key)');
@@ -110,16 +106,17 @@ if (
 }
 
 const obj2 = { a: '01', b: '02', bb: '02', bbb: '02' };
-const wrappedObj2 = new ObjectWrapper<obj2, keyObj2>(obj2);
-// const keys = wrappedObj2.findKeys('02');
-// if (
-//   wrappedObj2.findKeys('03').length === 0 &&
-//   keys.includes('b') &&
-//   keys.includes('bb') &&
-//   keys.includes('bbb') &&
-//   keys.length === 3
-// ) {
-//   console.log('OK: findKeys(val)');
-// } else {
-//   console.error('NG: findKeys(val)');
-// }
+const wrappedObj2 = new ObjectWrapper<typeof obj2>(obj2);
+type obj2Key = keyof { a: '01'; b: '02'; bb: '02'; bbb: '02' };
+const keys = wrappedObj2.findKeys<obj2Key>('02');
+if (
+  wrappedObj2.findKeys<obj2Key>('03').length === 0 &&
+  keys.includes('b') &&
+  keys.includes('bb') &&
+  keys.includes('bbb') &&
+  keys.length === 3
+) {
+  console.log('OK: findKeys(val)');
+} else {
+  console.error('NG: findKeys(val)');
+}

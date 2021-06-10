@@ -48,6 +48,19 @@ class ObjectWrapper {
             return undefined;
         }
     }
+    /**
+     * 指定した値を持つkeyの配列を返却。該当のものがなければ空の配列を返却。
+     */
+    findKeys(val) {
+        const arr = [];
+        const keys = Object.keys(this._obj);
+        keys.forEach((key) => {
+            if (this._obj[key] === val) {
+                arr.push(key);
+            }
+        });
+        return arr;
+    }
 }
 /**
  * check script
@@ -80,16 +93,15 @@ else {
 }
 const obj2 = { a: '01', b: '02', bb: '02', bbb: '02' };
 const wrappedObj2 = new ObjectWrapper(obj2);
-// const keys = wrappedObj2.findKeys('02');
-// if (
-//   wrappedObj2.findKeys('03').length === 0 &&
-//   keys.includes('b') &&
-//   keys.includes('bb') &&
-//   keys.includes('bbb') &&
-//   keys.length === 3
-// ) {
-//   console.log('OK: findKeys(val)');
-// } else {
-//   console.error('NG: findKeys(val)');
-// }
+const keys = wrappedObj2.findKeys('02');
+if (wrappedObj2.findKeys('03').length === 0 &&
+    keys.includes('b') &&
+    keys.includes('bb') &&
+    keys.includes('bbb') &&
+    keys.length === 3) {
+    console.log('OK: findKeys(val)');
+}
+else {
+    console.error('NG: findKeys(val)');
+}
 //# sourceMappingURL=index.js.map
