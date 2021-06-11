@@ -59,15 +59,11 @@ class ObjectWrapper<T> {
    * 指定した値を持つkeyの配列を返却。該当のものがなければ空の配列を返却。
    */
   findKeys<K extends keyof T>(val: T[K]) {
-    const arr: unknown[] = [];
-    const keys: any = Object.keys(this._obj);
+    const keyType = R.keys(Object.keys(this._obj));
 
-    keys.forEach((key: K) => {
-      if (this._obj[key] === val) {
-        arr.push(key);
-      }
-    });
+    const keys: typeof keyType = Object.keys(this._obj);
 
+    const arr: string[] = keys.filter((key: K) => this._obj[key] === val);
     return arr;
   }
 }

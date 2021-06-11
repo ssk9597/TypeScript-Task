@@ -52,13 +52,9 @@ class ObjectWrapper {
      * 指定した値を持つkeyの配列を返却。該当のものがなければ空の配列を返却。
      */
     findKeys(val) {
-        const arr = [];
+        const keyType = R.keys(Object.keys(this._obj));
         const keys = Object.keys(this._obj);
-        keys.forEach((key) => {
-            if (this._obj[key] === val) {
-                arr.push(key);
-            }
-        });
+        const arr = keys.filter((key) => this._obj[key] === val);
         return arr;
     }
 }
